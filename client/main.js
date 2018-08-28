@@ -15,29 +15,14 @@ Template.hello.onCreated(function helloOnCreated() {
 
     let web3 = Web3Provider.getInstance();
 
-    web3.eth.getCoinbase().then( (result) => {
+    web3.eth.getCoinbase().then((result) => {
             console.log("web3provider.coinbase: " + result);
             this.coinbase.set(result);
         }
-    ).catch( (error) => {
-            console.log("error trying to get balance: " + error);
+    ).catch((error) => {
+            console.log("error trying to get coinbase: " + error);
         }
     );
-
-    web3.eth.getBalance(this.coinbase.get()).then( (result) => {
-
-            let wei = web3.utils.fromWei(result,'ether');
-
-            console.log("web3provider.balance: " + wei);
-            this.balance.set(wei);
-        }
-    ).catch( (error) => {
-            console.log("error trying to get balance: " + error);
-        }
-    );
-
-
-
 
 
 });
@@ -58,5 +43,21 @@ Template.hello.events({
     'click button'(event, instance) {
         // increment the counter when button is clicked
         instance.counter.set(instance.counter.get() + 1);
+
+        // get the balanc eof the coinbase
+        let web3 = Web3Provider.getInstance();
+
+        let address = instance.coinbase.get();
+        console.log("coinbase: " + address);
+
+        web3.eth.getBalance(address).then((result) => {
+                let wei = web3.utils.fromWei(result, 'ether');
+                console.log("web3provider.balance: " + wei);
+                instance.balance.set(wei);
+            }
+        ).catch((error) => {
+                console.log("error trying to get balance: " + error);
+            }
+        );
     },
 });
