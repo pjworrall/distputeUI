@@ -12,7 +12,7 @@ let Web3Provider = (function () {
     let cached = false;
 
     function create() {
-        return  new Web3(Web3.givenProvider || "ws://localhost:7545");
+        return  new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
     }
 
     return {
