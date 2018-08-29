@@ -33,29 +33,6 @@ Template.hello.helpers({
 });
 
 Template.hello.events({
-    'click .js-balance'(event, instance) {
-        event.preventDefault();
-
-        let web3 = Web3Provider.get();
-
-        debugger;
-
-        if (web3) {
-            let address = instance.coinbase.get();
-            console.log("coinbase: " + address);
-
-            web3.eth.getBalance(address, function (error, result) {
-                if (!error) {
-                    let wei = web3.fromWei(result, 'ether');
-                    console.log("get balance: " + wei);
-                    instance.balance.set(wei);
-                } else {
-                    console.log("get balance error: " + error);
-                }
-
-            });
-        }
-    },
     'click .js-coinbase'(event, instance) {
         event.preventDefault();
 
@@ -68,6 +45,26 @@ Template.hello.events({
                     instance.coinbase.set(result);
                 } else {
                     console.log("get coinbase error: " + error);
+                }
+
+            });
+        }
+    },
+    'click .js-balance'(event, instance) {
+        event.preventDefault();
+
+        let web3 = Web3Provider.get();
+
+        if (web3) {
+            let address = instance.coinbase.get();
+
+            web3.eth.getBalance(address, function (error, result) {
+                if (!error) {
+                    let wei = web3.fromWei(result, 'ether');
+                    console.log("get balance: " + wei);
+                    instance.balance.set(wei);
+                } else {
+                    console.log("get balance error: " + error);
                 }
 
             });
@@ -216,7 +213,7 @@ Template.hello.events({
                     };
 
                     // use our global Wallet to store the Keystore in the Session
-                    Wallet.set(ks, Session);
+                    Wallet.set(ks);
 
                     // create new web3
                     let web3 = new Web3();
@@ -229,7 +226,7 @@ Template.hello.events({
                     web3.setProvider(provider);
 
                     // use our global Web3Provvider to store the web3 in the Session
-                    Web3Provider.set(web3, Session);
+                    Web3Provider.set(web3);
 
                 });
 
