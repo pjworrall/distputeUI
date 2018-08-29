@@ -5,29 +5,20 @@
  *
  */
 
-import Web3 from 'web3';
+// a global function to share the web3 instance across the app
+let Web3Provider = {
 
-let Web3Provider = (function () {
-    let web3;
-    let cached = false;
+    set: function (web3, session) {
+        session.set("web3", this.web3 = web3);
+    },
 
-    function create() {
-        return  new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+    get: function () {
+        return this.web3;
+    },
+
+    destroy: function (session) {
+        session.set("web3", this.web3 = undefined);
     }
+};
 
-    return {
-        getInstance: function () {
-            if (!web3) {
-                web3 = create();
-            }
-            return web3;
-        },
-        reset: function () {
-            web3 = undefined;
-            cached = false;
-        }
-    }
-
-})();
-
-export {Web3Provider};
+export { Web3Provider };

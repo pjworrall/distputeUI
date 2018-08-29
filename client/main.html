@@ -6,23 +6,25 @@
   <h1>Demo App for Distpute.</h1>
 
   {{> hello}}
- <!-- {{> info}} -->
+
 </body>
 
 <template name="hello">
-  <button class="js-balance">Balance</button>
-  <p>You've pressed the button {{counter}} times.</p>
-    <p>The coinbase is [{{coinbase}}] and has a balance of [{{balance}}]</p>
+    <h2>Overview</h2>
     <p>This is to exercise the Test App to explore creating Agreements and resolving disputes with Adjudicators</p>
+    <hr>
+    <form>
+        <p>Provide a hd wallet mnemonic:</p>
+        <input type="password" name="mnemonic" size="100"/>
+        <button type="button" class="js-unlock">Enter</button>
+    </form>
+    <p>should show first ten address in wallet here...</p>
+    <hr>
+    <p>Check Ethereum node access with the Balance button above.</p>
+    <button class="js-balance">Balance</button>&nbsp;&nbsp;<button class="js-coinbase">Coinbase</button>
+    <p>The coinbase is [{{coinbase}}] and has a balance of [{{balance}}]</p>
+    <hr>
+    <p>Create an Agreement:</p>
     <button class="js-agreement">New Agreement</button>
 </template>
 
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
-</template>

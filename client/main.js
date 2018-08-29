@@ -1,44 +1,26 @@
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
 
+import {Wallet} from '/imports/startup/client/wallet.js';
 import {Web3Provider} from '/imports/startup/client/web3provider.js';
 
-import {EthHdWallet} from 'eth-hd-wallet';
+import lightwallet from 'eth-lightwallet';
+import HookedWeb3Provider from 'hooked-web3-provider';
+import Web3 from "web3";
+
+import {Session} from "meteor/session";
+
 
 import './main.html';
 
 Template.hello.onCreated(function helloOnCreated() {
-    // counter starts at 0
-    this.counter = new ReactiveVar(0);
     this.balance = new ReactiveVar("DK");
     this.agreement = new ReactiveVar("DK");
     this.coinbase = new ReactiveVar("DK");
-
-
 });
 
-Template.hello.onRendered(function helloOnRendered() {
-
-        let web3 = Web3Provider.getInstance();
-
-        const instance = this;
-
-        web3.eth.getCoinbase(function (error, result) {
-            if (!error) {
-                console.log("coinbase: " + result);
-                instance.coinbase.set(result);
-            } else {
-                console.log("get coinbase error: " + error);
-            }
-
-        });
-    }
-);
 
 Template.hello.helpers({
-    counter() {
-        return Template.instance().counter.get();
-    },
     balance() {
         return Template.instance().balance.get();
     },
@@ -52,41 +34,51 @@ Template.hello.helpers({
 
 Template.hello.events({
     'click .js-balance'(event, instance) {
-        // increment the counter when button is clicked
-        instance.counter.set(instance.counter.get() + 1);
+        event.preventDefault();
 
-        // get the balance of the coinbase
-        let web3 = Web3Provider.getInstance();
+        let web3 = Web3Provider.get();
 
-        let address = instance.coinbase.get();
-        console.log("coinbase: " + address);
+        debugger;
 
-        web3.eth.getBalance(address, function (error, result) {
-            if (!error) {
-                let wei = web3.fromWei(result, 'ether');
-                console.log("get balance: " + wei);
-                instance.balance.set(wei);
-            } else {
-                console.log("get balance error: " + error);
-            }
+        if (web3) {
+            let address = instance.coinbase.get();
+            console.log("coinbase: " + address);
 
-        });
+            web3.eth.getBalance(address, function (error, result) {
+                if (!error) {
+                    let wei = web3.fromWei(result, 'ether');
+                    console.log("get balance: " + wei);
+                    instance.balance.set(wei);
+                } else {
+                    console.log("get balance error: " + error);
+                }
+
+            });
+        }
+    },
+    'click .js-coinbase'(event, instance) {
+        event.preventDefault();
+
+        let web3 = Web3Provider.get();
+
+        if (web3) {
+            web3.eth.getCoinbase(function (error, result) {
+                if (!error) {
+                    console.log("coinbase: " + result);
+                    instance.coinbase.set(result);
+                } else {
+                    console.log("get coinbase error: " + error);
+                }
+
+            });
+        }
     },
     'click .js-agreement'(event, instance) {
+        event.preventDefault();
 
         let web3 = Web3Provider.getInstance();
 
         console.log("main .js-agreement: to get an agreement contract");
-
-        // setup up a hd wallet for Granache
-
-        let mnemonic = "dog double video above tuna afford almost jazz exclude rural level flag";
-
-        const wallet = EthHdWallet.fromMnemonic(mnemonic);
-
-        let addresses = wallet.generateAddresses(10);
-
-        console.log(addresses);
 
         // get the distpute factory and create a new Agreement contract
 
@@ -170,14 +162,14 @@ Template.hello.events({
         let distputeFactory = factory.at("0xd89ca44096afab420b87e998ae3cfc103aab849f");
 
         let params = {
-            from: addresses[3],
+            from: "",
             gas: 0x1c33c9,
             gasPrice: 0x756A528800
         };
 
         debugger;
 
-        distputeFactory.newAgreement("Rain on Monday", params, function (error, tranHash) {
+        distputeFactory.newAgreement("Rain on Monday", "1", "2", params, function (error, tranHash) {
             //todo: this is not handling errors like 'not a BigNumber' , do we need a try catch somewhere?
 
             if (!error) {
@@ -187,21 +179,64 @@ Template.hello.events({
             }
         });
 
-        console.log(factory.options.address);
-
-
-        console.log("trying to perform a new agreement transaction");
-
-        // gas and gas price will have to be determined eventually or maybe required to work
-        // factory.methods.newAgreement("Dry on Sunday",
-        //     web3.eth.accounts[1],
-        //     web3.eth.accounts[2],
-        // ).send({from: web3.eth.accounts[0]})
-        //     .then(function(receipt){
-        //             console.log(receipt);
-        //         }
-        //
-        //     );
-
     },
+    'click .js-unlock'(event, template) {
+        // Prevent default browser form submit
+        event.preventDefault();
+
+        const mnemonic = template.$('input[name=mnemonic]').val();
+        const password = 'notused';
+
+        console.log("mnemonic: " + mnemonic);
+
+        lightwallet.keystore.createVault({
+            password: password,
+            seedPhrase: mnemonic,
+            // salt: fixture.salt,     // Optionally provide a salt.
+            // A unique salt will be generated otherwise.
+            hdPathString: "m/44'/60'/0'/0"
+        }, function (err, ks) {
+
+            if(err){
+                console.log("keystore creation error: " + err);
+            } else {
+                // Some methods will require providing the `pwDerivedKey`,
+                // Allowing you to only decrypt private keys on an as-needed basis.
+                // You can generate that value with this convenient method:
+                ks.keyFromPassword(password, function (err, pwDerivedKey) {
+                    if (err) throw err;
+
+                    // generate five new address/private key pairs
+                    // the corresponding private keys are also encrypted
+                    ks.generateNewAddress(pwDerivedKey, 10);
+                    let addr = ks.getAddresses();
+
+                    ks.passwordProvider = function (callback) {
+                        callback(null, passsword);
+                    };
+
+                    // use our global Wallet to store the Keystore in the Session
+                    Wallet.set(ks, Session);
+
+                    // create new web3
+                    let web3 = new Web3();
+
+                    let provider = new HookedWeb3Provider({
+                        host: "http://localhost:7545",
+                        transaction_signer: ks
+                    });
+
+                    web3.setProvider(provider);
+
+                    // use our global Web3Provvider to store the web3 in the Session
+                    Web3Provider.set(web3, Session);
+
+                });
+
+            }
+
+
+        });
+
+    }
 });
