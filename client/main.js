@@ -70,10 +70,66 @@ Template.hello.events({
             });
         }
     },
+    'click .js-unlock'(event, template) {
+        // Prevent default browser form submit
+        event.preventDefault();
+
+        const mnemonic = template.$('input[name=mnemonic]').val();
+        const password = 'notused';
+
+        console.log("mnemonic: " + mnemonic);
+
+        lightwallet.keystore.createVault({
+            password: password,
+            seedPhrase: mnemonic,
+            // salt: fixture.salt,     // Optionally provide a salt.
+            // A unique salt will be generated otherwise.
+            hdPathString: "m/44'/60'/0'/0"
+        }, function (err, ks) {
+
+            if(err){
+                console.log("keystore creation error: " + err);
+            } else {
+                // Some methods will require providing the `pwDerivedKey`,
+                // Allowing you to only decrypt private keys on an as-needed basis.
+                // You can generate that value with this convenient method:
+                ks.keyFromPassword(password, function (err, pwDerivedKey) {
+                    if (err) throw err;
+
+                    // generate five new address/private key pairs
+                    // the corresponding private keys are also encrypted
+                    ks.generateNewAddress(pwDerivedKey, 10);
+                    let addr = ks.getAddresses();
+
+                    ks.passwordProvider = function (callback) {
+                        callback(null, password);
+                    };
+
+                    // use our global Wallet to store the Keystore in the Session
+                    Wallet.set(ks);
+
+                    // create new web3
+                    let web3 = new Web3();
+
+                    let provider = new HookedWeb3Provider({
+                        host: "http://localhost:7545",
+                        transaction_signer: ks
+                    });
+
+                    web3.setProvider(provider);
+
+                    // use our global Web3Provvider to store the web3 in the Session
+                    Web3Provider.set(web3);
+
+                });
+            }
+        });
+
+    },
     'click .js-agreement'(event, instance) {
         event.preventDefault();
 
-        let web3 = Web3Provider.getInstance();
+        let web3 = Web3Provider.get();
 
         console.log("main .js-agreement: to get an agreement contract");
 
@@ -154,19 +210,23 @@ Template.hello.events({
             }
         ];
 
-        let factory = new web3.eth.contract(abi);
+        let distputeFactory = web3.eth.contract(abi).at("0xd89ca44096afab420b87e998ae3cfc103aab849f");
 
-        let distputeFactory = factory.at("0xd89ca44096afab420b87e998ae3cfc103aab849f");
+        debugger;
+
+        let wallet = Wallet.get();
 
         let params = {
-            from: "",
+            from: wallet.getAddresses()[0],
             gas: 0x1c33c9,
             gasPrice: 0x756A528800
         };
 
-        debugger;
+        let subject = "Rain on Monday";
+        let maker = wallet.getAddresses()[1];
+        let taker = wallet.getAddresses()[2];
 
-        distputeFactory.newAgreement("Rain on Monday", "1", "2", params, function (error, tranHash) {
+        distputeFactory.newAgreement(subject,  maker,  taker, params, function (error, tranHash) {
             //todo: this is not handling errors like 'not a BigNumber' , do we need a try catch somewhere?
 
             if (!error) {
@@ -174,64 +234,6 @@ Template.hello.events({
             } else {
                 console.log("newAgreement error: " + error);
             }
-        });
-
-    },
-    'click .js-unlock'(event, template) {
-        // Prevent default browser form submit
-        event.preventDefault();
-
-        const mnemonic = template.$('input[name=mnemonic]').val();
-        const password = 'notused';
-
-        console.log("mnemonic: " + mnemonic);
-
-        lightwallet.keystore.createVault({
-            password: password,
-            seedPhrase: mnemonic,
-            // salt: fixture.salt,     // Optionally provide a salt.
-            // A unique salt will be generated otherwise.
-            hdPathString: "m/44'/60'/0'/0"
-        }, function (err, ks) {
-
-            if(err){
-                console.log("keystore creation error: " + err);
-            } else {
-                // Some methods will require providing the `pwDerivedKey`,
-                // Allowing you to only decrypt private keys on an as-needed basis.
-                // You can generate that value with this convenient method:
-                ks.keyFromPassword(password, function (err, pwDerivedKey) {
-                    if (err) throw err;
-
-                    // generate five new address/private key pairs
-                    // the corresponding private keys are also encrypted
-                    ks.generateNewAddress(pwDerivedKey, 10);
-                    let addr = ks.getAddresses();
-
-                    ks.passwordProvider = function (callback) {
-                        callback(null, passsword);
-                    };
-
-                    // use our global Wallet to store the Keystore in the Session
-                    Wallet.set(ks);
-
-                    // create new web3
-                    let web3 = new Web3();
-
-                    let provider = new HookedWeb3Provider({
-                        host: "http://localhost:7545",
-                        transaction_signer: ks
-                    });
-
-                    web3.setProvider(provider);
-
-                    // use our global Web3Provvider to store the web3 in the Session
-                    Web3Provider.set(web3);
-
-                });
-
-            }
-
 
         });
 
