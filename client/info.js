@@ -222,7 +222,9 @@ Template.info.events({
             gasPrice: 0x756A528800
         };
 
-        let subject = "Rain on Monday";
+        let subject = instance.$('input[name=subject]').val();
+        subject = (subject !== "") ? subject.trim() : "subject not supplied";
+
         let maker = wallet.getAddresses()[1];
         let taker = wallet.getAddresses()[2];
 
@@ -242,7 +244,8 @@ Template.info.events({
                         console.log("Transaction data blocknumber: " + receipt.blockNumber);
 
                         TransactionData.insert({
-                            type: "New Agreement",
+                            type: "Agreement",
+                            subject: subject,
                             date: new Date(),
                             transactionHash: receipt.transactionHash,
                             blockNumber: receipt.blockNumber,
