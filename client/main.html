@@ -1,30 +1,14 @@
 <head>
-  <title>demoapp</title>
+    <title>demoapp</title>
 </head>
 
 <body>
-  <h1>Demo App for Distpute.</h1>
+<h1>Demo App for Distpute.</h1>
 
-  {{> hello}}
+{{> info}}
+
+{{> transactions }}
 
 </body>
 
-<template name="hello">
-    <h2>Overview</h2>
-    <p>This is to exercise the Test App to explore creating Agreements and resolving disputes with Adjudicators</p>
-    <hr>
-    <form>
-        <p>Provide a hd wallet mnemonic:</p>
-        <input type="password" name="mnemonic" size="100"/>
-        <button type="button" class="js-unlock">Enter</button>
-    </form>
-    <p>should show first ten address in wallet here...</p>
-    <hr>
-    <p>Check Ethereum node access with the Balance button above.</p>
-    Click <button class="js-coinbase">Coinbase</button>&nbsp;&nbsp;then &nbsp;&nbsp;<button class="js-balance">Balance</button>
-    <p>The coinbase is [{{coinbase}}] and has a balance of [{{balance}}]</p>
-    <hr>
-    <p>Create an Agreement:</p>
-    <button class="js-agreement">New Agreement</button>
-</template>
 

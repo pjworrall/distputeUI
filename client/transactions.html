@@ -1,0 +1,21 @@
+<template name="transactions">
+    <hr>
+    <h2>Transaction History</h2>
+
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Gas used</th>
+            <th>Address?</th>
+            <th>Tx Hash</th>
+        </tr>
+
+
+        {{#each transactions}}
+            {{> transaction}}
+        {{/each}}
+
+    </table>
+
+</template>
