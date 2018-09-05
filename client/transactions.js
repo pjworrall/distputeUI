@@ -6,7 +6,8 @@ import './transactions.html';
 Template.transactions.helpers({
 
     transactions() {
-        console.log("finding all the QQQQQQQQQQQQQQQ");
-        return TransactionData.find();
+        return TransactionData.find({},{
+            sort: {date: -1}
+        });
     }
 });
