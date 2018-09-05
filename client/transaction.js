@@ -1,5 +1,7 @@
 import { ReactiveVar } from 'meteor/reactive-var';
 
+import dateFormat from 'dateformat';
+
 import {TransactionData} from '/imports/startup/client/localstore';
 import {Template} from "meteor/templating";
 
@@ -18,7 +20,7 @@ Template.transaction.helpers({
     },
 
     date(){
-        return Template.instance().tx.get().date;
+        return dateFormat(Template.instance().tx.get().date, "isoDateTime");
     },
 
     gas(){
