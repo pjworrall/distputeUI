@@ -277,12 +277,10 @@ Template.info.events({
                     console.log( "new agreement event failed: " + error );
                 } else {
 
-                    console.log("event callback result: " + JSON.stringify(result));
-
                     AgreementEventData.insert({
                         factory: result.address,
                         maker: result.args.from,
-                        address: result.args.address,
+                        agreement: result.args.agreement,
                         date: new Date(),
                         blockHash: result.transactionHash,
                         blockNumber: result.blockNumber,

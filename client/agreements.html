@@ -1,0 +1,20 @@
+<template name="agreements">
+    <hr>
+    <h2>Agreements</h2>
+
+    <table id="tables">
+        <tr>
+            <th>Date</th>
+            <th>Maker</th>
+            <th>Agreement</th>
+            <th>Factory</th>
+        </tr>
+
+
+        {{#each agreements}}
+            {{> agreement}}
+        {{/each}}
+
+    </table>
+
+</template>
