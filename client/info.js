@@ -4,7 +4,7 @@ import {ReactiveVar} from 'meteor/reactive-var';
 import {Wallet} from '/imports/startup/client/wallet.js';
 import {Web3Provider} from '/imports/startup/client/web3provider.js';
 import {TransactionReceipt} from '/imports/startup/client/receipt';
-import {TransactionData} from '/imports/startup/client/localstore';
+import {TransactionData, AgreementEventData} from '/imports/startup/client/localstore';
 
 import lightwallet from 'eth-lightwallet';
 import HookedWeb3Provider from 'hooked-web3-provider';
@@ -234,6 +234,9 @@ Template.info.events({
             if (!error) {
                 console.log("newAgreement transaction: " + tranHash);
 
+                // check for the transaction receipt confirming the mining
+                // (would need mechanism to check confirmations for finality)
+
                 TransactionReceipt.check(tranHash, web3, function (error, receipt) {
 
                     if (error) {
@@ -256,9 +259,43 @@ Template.info.events({
                         });
                     }
                 });
+
+
             } else {
                 console.log("newAgreement error: " + error);
             }
+
+            // we can also watch for events straight away
+            // remember above callback and this are async events so will happen at
+            // different times
+
+            console.log("Checking for events...");
+
+            distputeFactory.AgreementCreated([{from: maker}], function (error, result) {
+
+                if (error) {
+                    console.log( "new agreement event failed: " + error );
+                } else {
+
+                    AgreementEventData.insert({
+                        factory: result.address,
+                        maker: result.args.from,
+                        address: result.args.address,
+                        date: new Date(),
+                        blockHash: result.transactionHash,
+                        blockNumber: result.blockNumber,
+                        logIndex: result.logIndex,
+                        event: result.name,
+                        transactionIndex: result.transactionIndex,
+                        transactionHash: result.transactionHash
+                    });
+
+                    //todo: there is a removed attribute on an event that should be studied
+                    // carefully because understanding it helps plan for managing transactions
+                    // which do not finalize/persist on the chain
+                }
+            });
+
 
         });
 
