@@ -20,6 +20,8 @@ Template.info.onCreated(function infoOnCreated() {
     this.agreement = new ReactiveVar("DK");
     this.coinbase = new ReactiveVar("DK");
     this.addresses = new ReactiveVar([]);
+
+    this.factory = new ReactiveVar("0xd89ca44096afab420b87e998ae3cfc103aab849f");
 });
 
 
@@ -35,6 +37,9 @@ Template.info.helpers({
     },
     addresses() {
         return  Template.instance().addresses.get();
+    },
+    factory() {
+        return  Template.instance().factory.get();
     }
 });
 
@@ -141,7 +146,14 @@ Template.info.events({
     'click .js-factory'(event, instance) {
         event.preventDefault();
 
-        console.log("set factory..");
+        let factory = instance.$('input[name=factory]').val();
+        factory = (factory !== "") ? factory.trim() : "0xd89ca44096afab420b87e998ae3cfc103aab849f";
+
+        instance.factory.set(factory);
+
+        // todo: should validate address formats really and use checksum technique
+
+        console.log("set factory.." + instance.factory.get());
 
     },
     'click .js-agreement'(event, instance) {
@@ -228,7 +240,7 @@ Template.info.events({
             }
         ];
 
-        let distputeFactory = web3.eth.contract(abi).at("0xd89ca44096afab420b87e998ae3cfc103aab849f");
+        let distputeFactory = web3.eth.contract(abi).at(instance.factory.get());
 
         let wallet = Wallet.get();
 
@@ -258,9 +270,7 @@ Template.info.events({
                     if (error) {
                         console.log( "new agreement transaction failed: " + error );
                     } else {
-                        // log the transaction
 
-                        console.log("Transaction receipt: " + JSON.stringify(receipt));
 
                         let log = receipt.logs[0];
 
