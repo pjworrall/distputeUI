@@ -265,17 +265,19 @@ Template.info.events({
                 console.log("newAgreement error: " + error);
             }
 
-            // we can also watch for events straight away
-            // remember above callback and this are async events so will happen at
-            // different times
+            // We can also watch for events straight away
+            // 1. Remember above callback and this are async events so will happen at different times
+            // 2. Need to look carefully at the pattern to make sure we are getting the event we expect because this might not
+            // in production
 
-            console.log("Checking for events...");
 
-            distputeFactory.AgreementCreated([{from: maker}], function (error, result) {
+            let event = distputeFactory.AgreementCreated([{from: maker}], function (error, result) {
 
                 if (error) {
                     console.log( "new agreement event failed: " + error );
                 } else {
+
+                    console.log("event callback result: " + JSON.stringify(result));
 
                     AgreementEventData.insert({
                         factory: result.address,
@@ -289,6 +291,8 @@ Template.info.events({
                         transactionIndex: result.transactionIndex,
                         transactionHash: result.transactionHash
                     });
+
+                    event.stopWatching();
 
                     //todo: there is a removed attribute on an event that should be studied
                     // carefully because understanding it helps plan for managing transactions
