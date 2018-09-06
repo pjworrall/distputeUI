@@ -2,19 +2,42 @@
     <h2>Overview</h2>
     <p>This is to exercise the Test App to explore creating Agreements and resolving disputes with Adjudicators</p>
     <hr>
+    <h2>HD Wallet</h2>
     <form>
-        <p>Provide a hd wallet mnemonic:</p>
+        <p>Provide a HD Wallet seed mnemonic:</p>
         <input type="password" name="mnemonic" size="100"/>
         <button type="button" class="js-unlock">Enter</button>
     </form>
     <hr>
-    <h2>First 10 Wallet Addresses</h2>
+    <h2>Identify Maker and Taker</h2>
+    <p>Define which addresses should represent the Taker or the Maker</p>
+    <form>
+        <table>
+            <tr>
+                <td>{{maker}}</td>
+                <td>{{taker}}</td>
+            </tr>
+            <tr>
+                <td>
+                    <select size="10" name="maker">
+                        {{#each addresses}}
+                            <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
 
-    <ul id="addresses">
-    {{#each addresses}}
-        <li>{{this}}</li>
-    {{/each}}
-    </ul>
+                </td>
+                <td>
+                    <select size="10" name="taker">
+                        {{#each addresses}}
+                            <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <button class="js-counterparties">submit</button>
+    </form>
+
     <hr>
     <p>Check Ethereum node access with the Balance button above.</p>
     Click

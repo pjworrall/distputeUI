@@ -22,6 +22,10 @@ Template.info.onCreated(function infoOnCreated() {
     this.addresses = new ReactiveVar([]);
 
     this.factory = new ReactiveVar("0xd89ca44096afab420b87e998ae3cfc103aab849f");
+
+    this.maker = new ReactiveVar();
+    this.taker = new ReactiveVar();
+
 });
 
 
@@ -36,10 +40,16 @@ Template.info.helpers({
         return Template.instance().agreement.get();
     },
     addresses() {
-        return  Template.instance().addresses.get();
+        return Template.instance().addresses.get();
     },
     factory() {
-        return  Template.instance().factory.get();
+        return Template.instance().factory.get();
+    },
+    maker() {
+        return Template.instance().maker.get();
+    },
+    taker() {
+        return Template.instance().taker.get();
     }
 });
 
@@ -98,7 +108,7 @@ Template.info.events({
             hdPathString: "m/44'/60'/0'/0"
         }, function (err, ks) {
 
-            if(err){
+            if (err) {
                 console.log("keystore creation error: " + err);
             } else {
                 // Some methods will require providing the `pwDerivedKey`,
@@ -123,7 +133,9 @@ Template.info.events({
                     // use our global Wallet to store the Keystore in the Session
                     Wallet.set(ks);
 
-
+                    // reactive vars for views
+                    template.maker.set(addr[1]);
+                    template.taker.set(addr[2]);
 
                     // create new web3
                     let web3 = new Web3();
@@ -154,6 +166,25 @@ Template.info.events({
         // todo: should validate address formats really and use checksum technique
 
         console.log("set factory.." + instance.factory.get());
+
+    },
+
+    'click .js-counterparties'(event, instance) {
+        event.preventDefault();
+
+        let maker = instance.$('select[name=maker]').val();
+        let taker = instance.$('select[name=taker]').val();
+
+        console.log(">>> " + maker + "' " + taker );
+
+        if(maker && taker){
+            instance.maker.set(maker);
+            instance.taker.set(taker);
+
+            console.log("set counterparties as: " + instance.maker.get() + ", " + instance.taker.get());
+        } else {
+            console.log("maker and taker undefined");
+        }
 
     },
     'click .js-agreement'(event, instance) {
@@ -253,10 +284,10 @@ Template.info.events({
         let subject = instance.$('input[name=subject]').val();
         subject = (subject !== "") ? subject.trim() : "subject not supplied";
 
-        let maker = wallet.getAddresses()[1];
-        let taker = wallet.getAddresses()[2];
+        let maker = instance.maker.get();
+        let taker = instance.taker.get();
 
-        distputeFactory.newAgreement(subject,  maker,  taker, params, function (error, tranHash) {
+        distputeFactory.newAgreement(subject, maker, taker, params, function (error, tranHash) {
             //todo: this is not handling errors like 'not a BigNumber' , do we need a try catch somewhere?
 
             if (!error) {
@@ -268,7 +299,7 @@ Template.info.events({
                 TransactionReceipt.check(tranHash, web3, function (error, receipt) {
 
                     if (error) {
-                        console.log( "new agreement transaction failed: " + error );
+                        console.log("new agreement transaction failed: " + error);
                     } else {
 
 
@@ -301,7 +332,7 @@ Template.info.events({
             let event = distputeFactory.AgreementCreated([{from: maker}], function (error, result) {
 
                 if (error) {
-                    console.log( "new agreement event failed: " + error );
+                    console.log("new agreement event failed: " + error);
                 } else {
 
                     AgreementEventData.insert({
