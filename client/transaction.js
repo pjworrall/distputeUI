@@ -33,6 +33,10 @@ Template.transaction.helpers({
 
     transactionHash() {
         return Template.instance().tx.get().transactionHash;
+    },
+
+    from() {
+        return Template.instance().tx.get().from;
     }
 
 });

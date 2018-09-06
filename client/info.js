@@ -270,7 +270,7 @@ Template.info.events({
                             date: new Date(),
                             transactionHash: log.transactionHash,
                             blockNumber: log.blockNumber,
-                            from: receipt.from,
+                            from: maker,
                             to: log.address,
                             gas: receipt.gasUsed,
                             cumulativeGasUsed: receipt.cumulativeGasUsed
