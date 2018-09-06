@@ -177,13 +177,16 @@ Template.info.events({
 
         console.log(">>> " + maker + "' " + taker );
 
-        if(maker && taker){
+        if(maker){
             instance.maker.set(maker);
-            instance.taker.set(taker);
+            } else {
+            console.log("maker undefined");
+        }
 
-            console.log("set counterparties as: " + instance.maker.get() + ", " + instance.taker.get());
+        if(taker){
+            instance.taker.set(taker);
         } else {
-            console.log("maker and taker undefined");
+            console.log("taker undefined");
         }
 
     },

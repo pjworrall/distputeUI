@@ -11,15 +11,16 @@
     <hr>
     <h2>Identify Maker and Taker</h2>
     <p>Define which addresses should represent the Taker or the Maker</p>
+    <!-- Would need to make what is selected for maker and taker mutually exclusive -->
     <form>
-        <table>
+        <table id="tables">
             <tr>
-                <td>{{maker}}</td>
-                <td>{{taker}}</td>
+                <th>Maker: {{maker}}</th>
+                <th>Taker: {{taker}}</th>
             </tr>
             <tr>
                 <td>
-                    <select size="10" name="maker">
+                    <select id="select" size="10" name="maker">
                         {{#each addresses}}
                             <option value="{{this}}">{{this}}</option>
                         {{/each}}
@@ -27,7 +28,7 @@
 
                 </td>
                 <td>
-                    <select size="10" name="taker">
+                    <select id="select" size="10" name="taker">
                         {{#each addresses}}
                             <option value="{{this}}">{{this}}</option>
                         {{/each}}
@@ -39,10 +40,9 @@
     </form>
 
     <hr>
-    <p>Check Ethereum node access with the Balance button above.</p>
-    Click
-    <button class="js-coinbase">Coinbase</button>&nbsp;&nbsp;then &nbsp;&nbsp;<button class="js-balance">Balance
-</button>
+    <p>Check Ethereum node access with the Balance. Click:</p>
+
+    <button class="js-coinbase">Coinbase</button>&nbsp;&nbsp;then &nbsp;&nbsp;<button class="js-balance">Balance</button>
     <p>The coinbase is [{{coinbase}}] and has a balance of [{{balance}}]</p>
     <hr>
     <h2>Agreement Factory</h2>

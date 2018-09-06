@@ -20,3 +20,15 @@
     background-color: #4CAF50;
     color: white;
 }
+
+#select {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#select option {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: medium;
+}
