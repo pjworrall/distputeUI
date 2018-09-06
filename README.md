@@ -7,7 +7,7 @@ Address of the Distpute Factory SC to create Agreements from.
 
 **Todo**
 
-* Get the Address of the Agreement contract
+* ~~Get the Address of the Agreement contract~~
 
 * Create a view for each role (Maker, Taker, Resolver)
 
