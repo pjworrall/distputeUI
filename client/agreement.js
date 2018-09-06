@@ -29,6 +29,10 @@ Template.agreement.helpers({
 
     factory(){
         return Template.instance().agreement.get().factory;
+    },
+
+    taker(){
+        return Template.instance().agreement.get().taker;
     }
 
 });

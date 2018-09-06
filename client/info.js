@@ -19,6 +19,7 @@ Template.info.onCreated(function infoOnCreated() {
     this.balance = new ReactiveVar("DK");
     this.agreement = new ReactiveVar("DK");
     this.coinbase = new ReactiveVar("DK");
+    this.addresses = new ReactiveVar([]);
 });
 
 
@@ -31,6 +32,9 @@ Template.info.helpers({
     },
     agreement() {
         return Template.instance().agreement.get();
+    },
+    addresses() {
+        return  Template.instance().addresses.get();
     }
 });
 
@@ -101,7 +105,11 @@ Template.info.events({
                     // generate five new address/private key pairs
                     // the corresponding private keys are also encrypted
                     ks.generateNewAddress(pwDerivedKey, 10);
+
+                    // store wallet addresses on template for use with reactive var
                     let addr = ks.getAddresses();
+                    template.addresses.set(addr);
+
 
                     ks.passwordProvider = function (callback) {
                         callback(null, password);
@@ -109,6 +117,8 @@ Template.info.events({
 
                     // use our global Wallet to store the Keystore in the Session
                     Wallet.set(ks);
+
+
 
                     // create new web3
                     let web3 = new Web3();
@@ -126,6 +136,12 @@ Template.info.events({
                 });
             }
         });
+
+    },
+    'click .js-factory'(event, instance) {
+        event.preventDefault();
+
+        console.log("set factory..");
 
     },
     'click .js-agreement'(event, instance) {
@@ -281,6 +297,7 @@ Template.info.events({
                     AgreementEventData.insert({
                         factory: result.address,
                         maker: result.args.from,
+                        taker: taker,
                         agreement: result.args.agreement,
                         date: new Date(),
                         blockHash: result.transactionHash,

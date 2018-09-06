@@ -7,7 +7,14 @@
         <input type="password" name="mnemonic" size="100"/>
         <button type="button" class="js-unlock">Enter</button>
     </form>
-    <p>should show first ten address in wallet here...</p>
+    <hr>
+    <h2>First 10 Wallet Addresses</h2>
+
+    <ul id="addresses">
+    {{#each addresses}}
+        <li>{{this}}</li>
+    {{/each}}
+    </ul>
     <hr>
     <p>Check Ethereum node access with the Balance button above.</p>
     Click
