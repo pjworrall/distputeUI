@@ -20,7 +20,7 @@ Template.transaction.helpers({
     },
 
     date(){
-        return dateFormat(Template.instance().tx.get().date, "isoDateTime");
+        return dateFormat(Template.instance().tx.get().date, "mm:dd:yy HH:MM");
     },
 
     gas(){

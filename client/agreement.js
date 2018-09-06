@@ -16,7 +16,7 @@ Template.agreement.onCreated(function() {
 Template.agreement.helpers({
 
     date() {
-        return dateFormat(Template.instance().agreement.get().date, "isoDateTime");
+        return dateFormat(Template.instance().agreement.get().date, "mm:dd:yy HH:MM");
     },
 
     maker(){

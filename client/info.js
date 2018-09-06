@@ -244,22 +244,23 @@ Template.info.events({
                     } else {
                         // log the transaction
 
-                        console.log("Transaction data blocknumber: " + receipt.blockNumber);
+                        console.log("Transaction receipt: " + JSON.stringify(receipt));
+
+                        let log = receipt.logs[0];
 
                         TransactionData.insert({
                             type: "Agreement",
                             subject: subject,
                             date: new Date(),
-                            transactionHash: receipt.transactionHash,
-                            blockNumber: receipt.blockNumber,
+                            transactionHash: log.transactionHash,
+                            blockNumber: log.blockNumber,
                             from: receipt.from,
-                            to: receipt.to,
+                            to: log.address,
                             gas: receipt.gasUsed,
                             cumulativeGasUsed: receipt.cumulativeGasUsed
                         });
                     }
                 });
-
 
             } else {
                 console.log("newAgreement error: " + error);
