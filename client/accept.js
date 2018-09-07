@@ -242,7 +242,12 @@ Template.accept.events({
         // the call MUST come from the Taker address but how do we know it without it being factored into
         // a global ?
 
-        let taker = wallet.getAddresses()[0];
+        let taker = Session.get('taker');
+
+        if(!taker) {
+            console.log("taker address not set");
+            return;
+        }
 
         let params = {
             from: taker,
@@ -264,7 +269,7 @@ Template.accept.events({
                         let log = receipt.logs[0];
 
                         TransactionData.insert({
-                            type: "Acceptance",
+                            type: "Accept",
                             date: new Date(),
                             transactionHash: log.transactionHash,
                             blockNumber: log.blockNumber,
