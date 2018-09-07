@@ -9,24 +9,14 @@
         <button type="button" class="js-unlock">Enter</button>
     </form>
     <hr>
-    <h2>Identify Maker and Taker</h2>
-    <p>Define which addresses should represent the Taker or the Maker</p>
-    <!-- Would need to make what is selected for maker and taker mutually exclusive -->
+    <h2>Identify a Taker</h2>
+    <p>Choose an address to be the Taker. The other counter party in the agreement</p>
     <form>
         <table id="tables">
             <tr>
-                <th>Maker: {{maker}}</th>
                 <th>Taker: {{taker}}</th>
             </tr>
             <tr>
-                <td>
-                    <select id="select" size="10" name="maker">
-                        {{#each addresses}}
-                            <option value="{{this}}">{{this}}</option>
-                        {{/each}}
-                    </select>
-
-                </td>
                 <td>
                     <select id="select" size="10" name="taker">
                         {{#each addresses}}

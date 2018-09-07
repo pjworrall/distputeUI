@@ -23,8 +23,7 @@ Template.info.onCreated(function infoOnCreated() {
 
     this.factory = new ReactiveVar("0xd89ca44096afab420b87e998ae3cfc103aab849f");
 
-    this.maker = new ReactiveVar();
-    this.taker = new ReactiveVar();
+    Session.set('taker',undefined);
 
 });
 
@@ -45,11 +44,14 @@ Template.info.helpers({
     factory() {
         return Template.instance().factory.get();
     },
-    maker() {
-        return Template.instance().maker.get();
-    },
     taker() {
-        return Template.instance().taker.get();
+        let taker = Session.get('taker');
+
+        if (taker) {
+            return taker;
+        } else {
+            return "DK";
+        }
     }
 });
 
@@ -133,9 +135,8 @@ Template.info.events({
                     // use our global Wallet to store the Keystore in the Session
                     Wallet.set(ks);
 
-                    // reactive vars for views
-                    template.maker.set(addr[1]);
-                    template.taker.set(addr[2]);
+                    // set initial taker
+                    Session.set('taker',addr[1]);
 
                     // create new web3
                     let web3 = new Web3();
@@ -172,19 +173,12 @@ Template.info.events({
     'click .js-counterparties'(event, instance) {
         event.preventDefault();
 
-        let maker = instance.$('select[name=maker]').val();
         let taker = instance.$('select[name=taker]').val();
 
-        console.log(">>> " + maker + "' " + taker );
+        console.log("taker set: " + taker );
 
-        if(maker){
-            instance.maker.set(maker);
-            } else {
-            console.log("maker undefined");
-        }
-
-        if(taker){
-            instance.taker.set(taker);
+        if (taker) {
+            Session.set('taker',taker);
         } else {
             console.log("taker undefined");
         }
@@ -287,10 +281,12 @@ Template.info.events({
         let subject = instance.$('input[name=subject]').val();
         subject = (subject !== "") ? subject.trim() : "subject not supplied";
 
-        let maker = instance.maker.get();
-        let taker = instance.taker.get();
+        let taker = Session.get('taker');
 
-        distputeFactory.newAgreement(subject, maker, taker, params, function (error, tranHash) {
+        // fudging adjudicator atm, this will be set by protocol in smart contractors
+        let adjudicator = wallet.getAddresses()[9];
+
+        distputeFactory.newAgreement(subject, taker, adjudicator, params, function (error, tranHash) {
             //todo: this is not handling errors like 'not a BigNumber' , do we need a try catch somewhere?
 
             if (!error) {
@@ -305,7 +301,6 @@ Template.info.events({
                         console.log("new agreement transaction failed: " + error);
                     } else {
 
-
                         let log = receipt.logs[0];
 
                         TransactionData.insert({
@@ -314,7 +309,7 @@ Template.info.events({
                             date: new Date(),
                             transactionHash: log.transactionHash,
                             blockNumber: log.blockNumber,
-                            from: maker,
+                            from: params.from, // todo: surely the receipt as the from address and that would be more reliable?
                             to: log.address,
                             gas: receipt.gasUsed,
                             cumulativeGasUsed: receipt.cumulativeGasUsed
@@ -330,9 +325,11 @@ Template.info.events({
             // 1. Remember above callback and this are async events so will happen at different times
             // 2. Need to look carefully at the pattern to make sure we are getting the event we expect because this might not
             // in production
+            // 3. this was appearing to work but relaised {from: } was maker but should have been transaction sender of createAGreement to factory
+            // why did it work because it should not have filtered correctly, and does it now it is corrected?
 
 
-            let event = distputeFactory.AgreementCreated([{from: maker}], function (error, result) {
+            let event = distputeFactory.AgreementCreated([{from: wallet.getAddresses()[0]}], function (error, result) {
 
                 if (error) {
                     console.log("new agreement event failed: " + error);
@@ -340,7 +337,6 @@ Template.info.events({
 
                     AgreementEventData.insert({
                         factory: result.address,
-                        maker: result.args.from,
                         taker: taker,
                         agreement: result.args.agreement,
                         date: new Date(),

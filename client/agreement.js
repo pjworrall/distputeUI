@@ -19,10 +19,6 @@ Template.agreement.helpers({
         return dateFormat(Template.instance().agreement.get().date, "mm:dd:yy HH:MM");
     },
 
-    maker(){
-        return Template.instance().agreement.get().maker;
-    },
-
     agreement(){
         return Template.instance().agreement.get().agreement;
     },
