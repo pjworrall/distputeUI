@@ -10,3 +10,5 @@ import './agreements.js';
 
 import './accept.js';
 
+import './benefit.js';
+

@@ -23,7 +23,7 @@ Address of the Distpute Factory SC to create Agreements from.
 
 * Enable Maker, Taker and Resolver to receive events on an Agreement
 
+* Module to report public attributes on an Agreement for use throughout the App
+
 **Known Bugs**
 
-Maker Address when provided is used for transaction creation but not for the 
-Agreement owner.

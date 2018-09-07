@@ -1,0 +1,26 @@
+<template name="benefit">
+    <hr>
+    <h2>Benefit from Agreement</h2>
+    <p>Originator or Taker can claim benefit once the event has occurred. Currently only uses Originator Address.</p>
+    <form>
+        <p>Agreement Address to Claim Benefit from:</p>
+        <input name="agreement" size="100"/>
+        <button type="button" class="js-benefit">Claim</button>
+    </form>
+    <br>
+    <p>
+    {{#if benefited}}
+        {{benefited}}<br>
+    {{/if}}
+    </p>
+
+    <hr>
+    <h2>Dispute an Agreement</h2>
+    <hr>
+    <h2>Resolve an Agreement</h2>
+    <hr>
+    <h2>Settle an Agreement</h2>
+    <hr>
+    <h2>Cancel an Agreement</h2>
+
+</template>
