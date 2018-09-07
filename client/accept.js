@@ -2,11 +2,23 @@ import {Template} from "meteor/templating";
 
 import {Wallet} from "../imports/startup/client/wallet";
 import {Web3Provider} from "../imports/startup/client/web3provider";
-import {ReactiveVar} from "meteor/reactive-var";
 import {TransactionData} from "../imports/startup/client/localstore";
 import {TransactionReceipt} from "../imports/startup/client/receipt";
 
 import "./accept.html";
+import {Session} from "meteor/session";
+
+Template.accept.helpers({
+    taker() {
+        let taker = Session.get('taker');
+
+        if (taker) {
+            return taker;
+        } else {
+            return "DK";
+        }
+    }
+});
 
 Template.accept.events({
     'click .js-accept'(event, instance) {
