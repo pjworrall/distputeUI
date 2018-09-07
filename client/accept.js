@@ -7,6 +7,11 @@ import {TransactionReceipt} from "../imports/startup/client/receipt";
 
 import "./accept.html";
 import {Session} from "meteor/session";
+import {ReactiveVar} from "meteor/reactive-var";
+
+Template.accept.onCreated(function infoOnCreated() {
+    this.accepted = new ReactiveVar(undefined);
+});
 
 Template.accept.helpers({
     taker() {
@@ -17,12 +22,17 @@ Template.accept.helpers({
         } else {
             return "DK";
         }
+    },
+    accepted() {
+        return Template.instance().accepted.get();
     }
 });
 
 Template.accept.events({
     'click .js-accept'(event, instance) {
         event.preventDefault();
+
+        instance.accepted.set(undefined);
 
         const address = instance.$('input[name=address]').val();
 
@@ -309,8 +319,7 @@ Template.accept.events({
                     console.log("agreement acceptance event failed: " + error);
                 } else {
                     console.log("accepted agreement " + result.args.subject);
-                    console.log(JSON.stringify(result));
-
+                    instance.accepted.set("Accepted");
                     event.stopWatching();
                 }
             });
