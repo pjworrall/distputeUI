@@ -8,3 +8,5 @@ import './transactions.js';
 import './agreement.js';
 import './agreements.js';
 
+import './accept.js';
+
