@@ -4,6 +4,8 @@ import {Wallet} from "../imports/startup/client/wallet";
 import {Web3Provider} from "../imports/startup/client/web3provider";
 import {TransactionData} from "../imports/startup/client/localstore";
 import {TransactionReceipt} from "../imports/startup/client/receipt";
+import {AgreementContract} from "../imports/startup/client/contracts.js";
+
 
 import "./benefit.html";
 import {Session} from "meteor/session";
@@ -36,216 +38,14 @@ Template.benefit.events({
             return;
         }
 
-        // todo: really need to factor out the abi etc. now!!!
+        let agreement = web3.eth.contract(AgreementContract.abi).at(address);
 
-        let abi = [
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "isDisputed",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [],
-                "name": "setAccepted",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [],
-                "name": "settle",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [
-                    {
-                        "name": "favoured",
-                        "type": "address"
-                    }
-                ],
-                "name": "setFavour",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "getSubject",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "string"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [],
-                "name": "setBeneficiary",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "isAccepted",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "getBeneficiary",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [],
-                "name": "setDispute",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "cancel",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "name": "subject",
-                        "type": "string"
-                    },
-                    {
-                        "name": "taker",
-                        "type": "address"
-                    },
-                    {
-                        "name": "adjudicator",
-                        "type": "address"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "constructor"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "name": "taker",
-                        "type": "address"
-                    },
-                    {
-                        "indexed": false,
-                        "name": "subject",
-                        "type": "string"
-                    }
-                ],
-                "name": "Accepted",
-                "type": "event"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "name": "determiningParty",
-                        "type": "address"
-                    }
-                ],
-                "name": "Determined",
-                "type": "event"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "name": "disputingParty",
-                        "type": "address"
-                    }
-                ],
-                "name": "Dispute",
-                "type": "event"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "name": "favouredParty",
-                        "type": "address"
-                    }
-                ],
-                "name": "Favoured",
-                "type": "event"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "name": "beneficiary",
-                        "type": "address"
-                    },
-                    {
-                        "indexed": true,
-                        "name": "adjudicator",
-                        "type": "address"
-                    }
-                ],
-                "name": "Settled",
-                "type": "event"
-            }
-        ];
-
-        let agreement = web3.eth.contract(abi).at(address);
+        // if the agreement has not been accepted by the counter party abandon
+        console.log("agreement accepted: " + agreement.isAccepted());
+        if(!agreement.isAccepted()) {
+            console.log("counter party has not yet accepted agreement");
+            return;
+        }
 
         let wallet = Wallet.get();
 
@@ -256,14 +56,13 @@ Template.benefit.events({
 
         let originator = wallet.getAddresses()[0];
 
-        console.log("originator address: " + originator);
-
         let params = {
             from: originator,
             gas: 0x1c33c9,
             gasPrice: 0x756A528800
         };
 
+        console.log("setBeneficiary params: " + JSON.stringify(params));
 
         agreement.setBeneficiary(params, function(error,tranHash) {
             if (!error) {

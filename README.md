@@ -27,3 +27,4 @@ Address of the Distpute Factory SC to create Agreements from.
 
 **Known Bugs**
 
+* if transactions fail event watchers don't stop polling for events
