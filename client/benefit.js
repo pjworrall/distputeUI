@@ -100,13 +100,11 @@ Template.benefit.events({
                 if (error) {
                     console.log("agreement benefitance event failed: " + error);
                 } else {
-                    console.log("benefited agreement event result: " + result);
                     instance.benefited.set("Benefited");
                     event.stopWatching();
                 }
             });
         });
-
 
     },
 });

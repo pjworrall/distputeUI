@@ -1,7 +1,97 @@
+/**
+ * Global Smart Contract ABI
+ *
+ * @author: Paul Worrall, Interition Services Ltd
+ *
+ */
+
+
+let FactoryContract = function () {
+
+    return {
+        'version': '29499ac96216af79c8da3ae80e13e4c663134355',
+        'abi': [
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getAgreementCount",
+                "outputs": [
+                    {
+                        "name": "agreementCount",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "subject",
+                        "type": "string"
+                    },
+                    {
+                        "name": "taker",
+                        "type": "address"
+                    },
+                    {
+                        "name": "adjudicator",
+                        "type": "address"
+                    }
+                ],
+                "name": "newAgreement",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "agreements",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "name": "from",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "agreement",
+                        "type": "address"
+                    }
+                ],
+                "name": "AgreementCreated",
+                "type": "event"
+            }
+        ]
+    }
+
+}();
+
 let AgreementContract = function () {
 
     return {
-        'version': '',
+        'version': '29499ac96216af79c8da3ae80e13e4c663134355',
         'abi': [
             {
                 "constant": true,
@@ -101,12 +191,54 @@ let AgreementContract = function () {
                 "type": "function"
             },
             {
+                "constant": true,
+                "inputs": [],
+                "name": "_Taker",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_Originator",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
                 "constant": false,
                 "inputs": [],
                 "name": "setDispute",
                 "outputs": [],
                 "payable": false,
                 "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_Adjudicator",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
                 "type": "function"
             },
             {
@@ -123,6 +255,10 @@ let AgreementContract = function () {
                     {
                         "name": "subject",
                         "type": "string"
+                    },
+                    {
+                        "name": "originator",
+                        "type": "address"
                     },
                     {
                         "name": "taker",
@@ -212,4 +348,5 @@ let AgreementContract = function () {
 
 }();
 
-export {AgreementContract};
+
+export {FactoryContract, AgreementContract};

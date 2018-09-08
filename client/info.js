@@ -5,6 +5,8 @@ import {Wallet} from '/imports/startup/client/wallet.js';
 import {Web3Provider} from '/imports/startup/client/web3provider.js';
 import {TransactionReceipt} from '/imports/startup/client/receipt';
 import {TransactionData, AgreementEventData} from '/imports/startup/client/localstore';
+import {FactoryContract} from "../imports/startup/client/contracts.js";
+
 
 import lightwallet from 'eth-lightwallet';
 import HookedWeb3Provider from 'hooked-web3-provider';
@@ -193,82 +195,7 @@ Template.info.events({
 
         // get the distpute factory and create a new Agreement contract
 
-        let abi = [
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "getAgreementCount",
-                "outputs": [
-                    {
-                        "name": "agreementCount",
-                        "type": "uint256"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [
-                    {
-                        "name": "subject",
-                        "type": "string"
-                    },
-                    {
-                        "name": "taker",
-                        "type": "address"
-                    },
-                    {
-                        "name": "adjudicator",
-                        "type": "address"
-                    }
-                ],
-                "name": "newAgreement",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [
-                    {
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "agreements",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "anonymous": false,
-                "inputs": [
-                    {
-                        "indexed": true,
-                        "name": "from",
-                        "type": "address"
-                    },
-                    {
-                        "indexed": false,
-                        "name": "agreement",
-                        "type": "address"
-                    }
-                ],
-                "name": "AgreementCreated",
-                "type": "event"
-            }
-        ];
-
-        let distputeFactory = web3.eth.contract(abi).at(instance.factory.get());
+        let distputeFactory = web3.eth.contract(FactoryContract.abi).at(instance.factory.get());
 
         let wallet = Wallet.get();
 
