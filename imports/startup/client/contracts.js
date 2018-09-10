@@ -9,7 +9,7 @@
 let FactoryContract = function () {
 
     return {
-        'version': '29499ac96216af79c8da3ae80e13e4c663134355',
+        'version': 'f8c385e6574920eae150a854cc7be4831f76b8e2',
         'abi': [
             {
                 "constant": true,
@@ -91,7 +91,7 @@ let FactoryContract = function () {
 let AgreementContract = function () {
 
     return {
-        'version': '29499ac96216af79c8da3ae80e13e4c663134355',
+        'version': 'f8c385e6574920eae150a854cc7be4831f76b8e2',
         'abi': [
             {
                 "constant": true,
@@ -142,6 +142,20 @@ let AgreementContract = function () {
             {
                 "constant": true,
                 "inputs": [],
+                "name": "_Subject",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
                 "name": "getSubject",
                 "outputs": [
                     {
@@ -160,6 +174,34 @@ let AgreementContract = function () {
                 "outputs": [],
                 "payable": false,
                 "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_Beneficiary",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_Determined",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
                 "type": "function"
             },
             {
@@ -184,6 +226,20 @@ let AgreementContract = function () {
                     {
                         "name": "",
                         "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_Accepted",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool"
                     }
                 ],
                 "payable": false,
@@ -246,6 +302,20 @@ let AgreementContract = function () {
                 "inputs": [],
                 "name": "cancel",
                 "outputs": [],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_Disputed",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
                 "payable": false,
                 "stateMutability": "view",
                 "type": "function"
@@ -317,6 +387,16 @@ let AgreementContract = function () {
             {
                 "anonymous": false,
                 "inputs": [
+                    {
+                        "indexed": true,
+                        "name": "adjudicator",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "name": "originator",
+                        "type": "address"
+                    },
                     {
                         "indexed": true,
                         "name": "favouredParty",
