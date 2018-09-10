@@ -1,0 +1,24 @@
+<template name="dispute">
+    <hr>
+    <h2>Dispute An Agreement</h2>
+    <p>Originator or Taker can dispute an agreement. Currently only uses Taker Address.</p>
+    <form>
+        <p>Agreement Address to Dispute from:</p>
+        <input name="disputed_agreement" size="100"/>
+        <button type="button" class="js-dispute">Dispute</button>
+    </form>
+    <br>
+    <p>
+    {{#if disputed}}
+        {{disputed}}<br>
+    {{/if}}
+    </p>
+
+    <hr>
+    <h2>Resolve an Agreement</h2>
+    <hr>
+    <h2>Settle an Agreement</h2>
+    <hr>
+    <h2>Cancel an Agreement</h2>
+
+</template>

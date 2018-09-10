@@ -12,3 +12,5 @@ import './accept.js';
 
 import './benefit.js';
 
+import './dispute.js';
+
