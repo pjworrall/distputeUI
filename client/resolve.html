@@ -1,0 +1,20 @@
+<template name="resolve">
+    <hr>
+    <h2>Resolve Agreement</h2>
+    <p>An "Adjudicator" role can determine who should benefit after one of the parties raises a Dispute. This identity will be provided
+    by the smart contract framework but for testing here it is the 10th Address in the HD Wallet.</p>
+    <form>
+        <p>Agreement Address to Resolve:</p>
+        <input name="resolved-agreement" size="100"/>
+        <p>Party Address to Favour:</p>
+        <input name="favoured-party" size="100"/>
+        <button type="button" class="js-resolve">Resolve</button>
+    </form>
+    <br>
+    <p>
+    {{#if resolved}}
+        {{resolved}}<br>
+    {{/if}}
+    </p>
+
+</template>
