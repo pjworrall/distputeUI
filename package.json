@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.55",
+    "bignumber.js": "^7.2.1",
     "dateformat": "^3.0.3",
     "eth-lightwallet": "^3.0.1",
     "hooked-web3-provider": "^1.0.0",

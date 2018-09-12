@@ -1,0 +1,19 @@
+<template name="tokens">
+    <hr>
+    <h2>Allocate Tokens for Staking</h2>
+    <p>Allocate Tokens for staking in Agreements. The Originator has all the Tokens in this mockup. Transfer will move Tokens to the selected HD Wallet Address for Taker above. </p>
+    <form>
+        <p>Amount of Tokens:</p>
+        <input name="token-amount" size="25"/>
+        <p>Token Contract Address</p>
+        <input name="token-address" size="100"/>
+        <button type="button" class="js-transfer">Transfer</button>
+    </form>
+    <br>
+    <p>
+    {{#if transfered}}
+        {{transfered}}<br>
+    {{/if}}
+    </p>
+
+</template>

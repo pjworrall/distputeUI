@@ -1,0 +1,19 @@
+<template name="transfers">
+    <hr>
+    <h2>Token Transfer Local History</h2>
+
+    <table id="tables">
+        <tr>
+            <th>Date</th>
+            <th>Token Address</th>
+            <th>Value</th>
+            <th>Beneficiary</th>
+        </tr>
+
+        {{#each transfers}}
+            {{> transfer}}
+        {{/each}}
+
+    </table>
+
+</template>
