@@ -1,0 +1,21 @@
+<template name="stake">
+    <hr>
+    <h2>Escrow a Stake for the Originator</h2>
+    <p>This allows the Originator to place their Stake in escrow with the Agreement.</p>
+    <form>
+        <p>Token Address:</p>
+        <input name="token-address" size="100"/>
+        <p>Agreement Address:</p>
+        <input name="agreement-address" size="100"/>
+        <p>Amount to stake:</p>
+        <input name="amount" size="100"/>
+        <button type="button" class="js-stake">Stake</button>
+    </form>
+    <br>
+    <p>
+        {{#if staked}}
+            {{staked}}<br>
+        {{/if}}
+    </p>
+
+</template>

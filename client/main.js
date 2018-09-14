@@ -24,3 +24,5 @@ import './todo.js';
 
 import './tokens.js';
 
+import './stake.js';
+
