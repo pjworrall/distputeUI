@@ -213,7 +213,10 @@ Template.info.events({
         // fudging adjudicator atm, this will be set by protocol in smart contractors
         let adjudicator = wallet.getAddresses()[9];
 
-        distputeFactory.newAgreement(subject, taker, adjudicator, params, function (error, tranHash) {
+        // todo: bum, horrible need to refactor now
+        var ERC20Token = "0x7c21f56495fc1e8cccf850cb3d6d05b74200ac37";
+
+        distputeFactory.newAgreement(subject, taker, adjudicator, ERC20Token, params, function (error, tranHash) {
             //todo: this is not handling errors like 'not a BigNumber' , do we need a try catch somewhere?
 
             if (!error) {

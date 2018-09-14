@@ -10,7 +10,7 @@
 let ERC20TokenContract = function () {
 
     return {
-        'version': 'e545d00d3f142a2ffc770b1c022db65b76105717',
+        'version': 'n/a',
         'abi': [
             {
                 "constant": false,
@@ -240,7 +240,7 @@ let ERC20TokenContract = function () {
 let FactoryContract = function () {
 
     return {
-        'version': 'f8c385e6574920eae150a854cc7be4831f76b8e2',
+        'version': '9480249af5d600e3eed27057e51b9bd6848dae3a',
         'abi': [
             {
                 "constant": true,
@@ -269,6 +269,10 @@ let FactoryContract = function () {
                     },
                     {
                         "name": "adjudicator",
+                        "type": "address"
+                    },
+                    {
+                        "name": "token",
                         "type": "address"
                     }
                 ],
@@ -322,7 +326,7 @@ let FactoryContract = function () {
 let AgreementContract = function () {
 
     return {
-        'version': 'f8c385e6574920eae150a854cc7be4831f76b8e2',
+        'version': '9480249af5d600e3eed27057e51b9bd6848dae3a',
         'abi': [
             {
                 "constant": true,
@@ -354,6 +358,20 @@ let AgreementContract = function () {
                 "outputs": [],
                 "payable": false,
                 "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getBalance",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
                 "type": "function"
             },
             {
@@ -567,6 +585,10 @@ let AgreementContract = function () {
                     },
                     {
                         "name": "adjudicator",
+                        "type": "address"
+                    },
+                    {
+                        "name": "token",
                         "type": "address"
                     }
                 ],
