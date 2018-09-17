@@ -5,6 +5,71 @@
  *
  */
 
+// let TemplateContractFunction = function () {
+//
+//     return {
+//         'version': 'n/a',
+//         'abi': []
+//     }
+//
+// }();
+
+let EscrowContract = function () {
+
+    return {
+        'version': '814e0a68e077821dee17d58810eb57cd28c7ede2',
+        'abi': [
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "beneficiary",
+                        "type": "address"
+                    }
+                ],
+                "name": "release",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "name": "erc20",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "name": "agreement",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "beneficiary",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Released",
+                "type": "event"
+            }
+        ]
+    }
+
+}();
 
 
 let ERC20TokenContract = function () {
@@ -682,4 +747,4 @@ let AgreementContract = function () {
 }();
 
 
-export {ERC20TokenContract, FactoryContract, AgreementContract};
+export {EscrowContract, ERC20TokenContract, FactoryContract, AgreementContract};
