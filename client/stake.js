@@ -27,13 +27,17 @@ Template.stake.events({
 
         instance.staked.set(undefined);
 
+        const partyAddress = instance.$('input[name=party-address]').val();
+
+        console.log("party address: " + partyAddress);
+
+        const escrowAddress = instance.$('input[name=escrow-address]').val();
+
+        console.log("escrow address: " + escrowAddress);
+
         const tokenAddress = instance.$('input[name=token-address]').val();
 
-        console.log("Token address: " + tokenAddress);
-
-        const agreementAddress = instance.$('input[name=agreement-address]').val();
-
-        console.log("Agreement address receiving stake: " + agreementAddress);
+        console.log("token address: " + tokenAddress);
 
         const amount = instance.$('input[name=amount]').val();
 
@@ -56,7 +60,7 @@ Template.stake.events({
         }
 
         // fudging adjudicator atm, this will be set by protocol in smart contractors
-        let originator = wallet.getAddresses()[0];
+        let originator = partyAddress;
 
         let params = {
             from: originator,
@@ -65,8 +69,9 @@ Template.stake.events({
         };
 
 
-        token.transfer(agreementAddress,amount,params, function(error,tranHash) {
+        token.transfer(escrowAddress,amount,params, function(error,tranHash) {
             if (!error) {
+
                 console.log("transfer tran hash: " + tranHash);
 
                 TransactionReceipt.check(tranHash, web3, function (error, receipt) {
