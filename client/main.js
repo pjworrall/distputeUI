@@ -26,3 +26,4 @@ import './tokens.js';
 
 import './stake.js';
 
+import './create.js';
