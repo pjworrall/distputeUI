@@ -7,23 +7,9 @@ Address of the Distpute Factory SC to create Agreements from.
 
 **Todo**
 
-* ~~Get the Address of the Agreement contract~~
+* Agreement checks Escrow stakes for Originator and Taker
 
-* Create a view for each role (Maker, Taker, Resolver)
-
-* Enable Maker to attempt to settle
-
-* Enable Taker to attempt to settle
-
-* Enable Maker to dispute
-
-* Enable Taker to dispute
-
-* Enable Resolver to resolve
-
-* Enable Maker, Taker and Resolver to receive events on an Agreement
-
-* Module to report public attributes on an Agreement for use throughout the App
+* Agreement settles by move Escrow balances to Beneficiary
 
 **Known Bugs**
 
