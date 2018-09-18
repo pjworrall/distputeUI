@@ -29,6 +29,14 @@ Template.agreement.helpers({
 
     taker(){
         return Template.instance().agreement.get().taker;
+    },
+
+    originatorEscrow(){
+        return Template.instance().agreement.get().originatorEscrow;
+    },
+
+    takerEscrow(){
+        return Template.instance().agreement.get().takerEscrow;
     }
 
 });

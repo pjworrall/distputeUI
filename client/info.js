@@ -258,6 +258,7 @@ Template.info.events({
             // 3. this was appearing to work but relaised {from: } was maker but should have been transaction sender of createAGreement to factory
             // why did it work because it should not have filtered correctly, and does it now it is corrected?
 
+            console.log("Started watching for Agreement creation event.");
 
             let event = distputeFactory.AgreementCreated([{from: wallet.getAddresses()[0]}], function (error, result) {
 
@@ -265,10 +266,14 @@ Template.info.events({
                     console.log("new agreement event failed: " + error);
                 } else {
 
+                    console.log(result);
+
                     AgreementEventData.insert({
                         factory: result.address,
                         taker: taker,
                         agreement: result.args.agreement,
+                        originatorEscrow: result.args.originatorEscrow,
+                        takerEscrow: result.args.takerEscrow,
                         date: new Date(),
                         blockHash: result.transactionHash,
                         blockNumber: result.blockNumber,
@@ -279,6 +284,8 @@ Template.info.events({
                     });
 
                     event.stopWatching();
+
+                    console.log("Stopped watching for Agreement creation event.");
 
                     //todo: there is a removed attribute on an event that should be studied
                     // carefully because understanding it helps plan for managing transactions

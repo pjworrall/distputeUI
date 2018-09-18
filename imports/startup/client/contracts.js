@@ -378,6 +378,16 @@ let FactoryContract = function () {
                         "indexed": false,
                         "name": "agreement",
                         "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "originatorEscrow",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "takerEscrow",
+                        "type": "address"
                     }
                 ],
                 "name": "AgreementCreated",
@@ -417,26 +427,26 @@ let AgreementContract = function () {
                 "type": "function"
             },
             {
+                "constant": true,
+                "inputs": [],
+                "name": "getOriginatorEscrow",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
                 "constant": false,
                 "inputs": [],
                 "name": "settle",
                 "outputs": [],
                 "payable": false,
                 "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "getBalance",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
                 "type": "function"
             },
             {
@@ -549,11 +559,53 @@ let AgreementContract = function () {
             {
                 "constant": true,
                 "inputs": [],
+                "name": "getTakerEscrow",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
                 "name": "_Accepted",
                 "outputs": [
                     {
                         "name": "",
                         "type": "bool"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getTokenBalance",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_OriginatorEscrow",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
                     }
                 ],
                 "payable": false,
@@ -601,6 +653,20 @@ let AgreementContract = function () {
                 "constant": true,
                 "inputs": [],
                 "name": "_Adjudicator",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "_TakerEscrow",
                 "outputs": [
                     {
                         "name": "",
