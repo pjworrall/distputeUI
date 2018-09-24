@@ -13,6 +13,7 @@ import './tokens.html';
 
 Template.tokens.onCreated(function infoOnCreated() {
 
+    // todo I don't think this needs to be Session var, more like ReactiveVar?
     Session.set('transfered',undefined);
 
 });

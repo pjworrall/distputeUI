@@ -37,7 +37,7 @@ Template.create.events({
 
         let params = {
             from: wallet.getAddresses()[0],
-            gas: 0x1c33c9,
+            gas: 0x24889C,
             gasPrice: 0x756A528800
         };
 

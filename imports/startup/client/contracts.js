@@ -305,7 +305,7 @@ let ERC20TokenContract = function () {
 let FactoryContract = function () {
 
     return {
-        'version': '9480249af5d600e3eed27057e51b9bd6848dae3a',
+        'version': '4da1c8dddd6385b0d512afc26bd88cf1be106aa5',
         'abi': [
             {
                 "constant": true,
@@ -401,7 +401,7 @@ let FactoryContract = function () {
 let AgreementContract = function () {
 
     return {
-        'version': '9480249af5d600e3eed27057e51b9bd6848dae3a',
+        'version': '4da1c8dddd6385b0d512afc26bd88cf1be106aa5',
         'abi': [
             {
                 "constant": true,
@@ -587,20 +587,6 @@ let AgreementContract = function () {
             {
                 "constant": true,
                 "inputs": [],
-                "name": "getTokenBalance",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
                 "name": "_OriginatorEscrow",
                 "outputs": [
                     {
@@ -761,6 +747,11 @@ let AgreementContract = function () {
                 "inputs": [
                     {
                         "indexed": true,
+                        "name": "agreement",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
                         "name": "disputingParty",
                         "type": "address"
                     }
@@ -773,16 +764,21 @@ let AgreementContract = function () {
                 "inputs": [
                     {
                         "indexed": true,
+                        "name": "agreement",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
                         "name": "adjudicator",
                         "type": "address"
                     },
                     {
-                        "indexed": true,
+                        "indexed": false,
                         "name": "originator",
                         "type": "address"
                     },
                     {
-                        "indexed": true,
+                        "indexed": false,
                         "name": "favouredParty",
                         "type": "address"
                     }
@@ -795,12 +791,12 @@ let AgreementContract = function () {
                 "inputs": [
                     {
                         "indexed": true,
-                        "name": "beneficiary",
+                        "name": "agreement",
                         "type": "address"
                     },
                     {
-                        "indexed": true,
-                        "name": "adjudicator",
+                        "indexed": false,
+                        "name": "beneficiary",
                         "type": "address"
                     }
                 ],

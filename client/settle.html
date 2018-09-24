@@ -1,0 +1,18 @@
+<template name="settle">
+    <hr>
+    <h2>Settle an Agreement</h2>
+
+    <p>This will settle the agreement and show the token balances of the counter parties after settlement</p>
+
+    <form>
+        <p>Agreement Address to Settle:</p>
+        <input name="agreement-address" size="100"/>
+        <button type="button" class="js-settle">Settle</button>
+    </form>
+
+    <h3>Balances</h3>
+    <p>Originator: {{originatorBalance}}</p>
+    <p>Taker: {{takerBalance}}</p>
+    <button type="button" class="js-balances">Refresh</button>
+
+</template>

@@ -7,9 +7,7 @@ Address of the Distpute Factory SC to create Agreements from.
 
 **Todo**
 
-* Agreement checks Escrow stakes for Originator and Taker
-
-* Agreement settles by move Escrow balances to Beneficiary
+* prioritise todo's
 
 **Known Bugs**
 
